@@ -4,6 +4,10 @@ import OtpController from "../controllers/OtpController.js";
 
 const otpRouter = express.Router();
 
+// send otp route
 otpRouter.post("/otp/send", Validations.sendOtpValidation(), OtpController.send);
+
+// verify otp route
+otpRouter.put("/otp/verify", Validations.verifyOtpValidation(), OtpController.verify);
 
 export default otpRouter;

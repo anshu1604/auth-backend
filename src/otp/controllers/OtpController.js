@@ -8,13 +8,27 @@ class OtpController {
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-            const errArr = errors.array();
-            errArr.map((item) => (item.msg = item.msg));
-            return sendErrorResponse(res, "OTP not sent!", errArr);
+                const errArr = errors.array();
+                errArr.map((item) => (item.msg = item.msg));
+                return sendErrorResponse(res, "OTP not sent!", errArr);
+            }
+            new OtpService(req, res).send();
+        } catch (err) {
+            console.log(err);
         }
-        new OtpService(req, res).send();
-    } catch (err) {
-        console.log(err);
+    }
+
+    static verify(req, res) {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                const errArr = errors.array();
+                errArr.map((item) => (item.msg = item.msg));
+                return sendErrorResponse(res, "OTP not sent!", errArr);
+            }
+            new OtpService(req, res).verify();
+        } catch (err) {
+            console.log(err);
         }
     }
 }

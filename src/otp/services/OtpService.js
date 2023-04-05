@@ -24,7 +24,23 @@ class OtpService {
             return sendResponse(this.response, 'OTP Sent!', { email });
         }
         catch (err) {
-            console.log(err)
+            return sendServerError(this.response, 'Internal Server Error');
+        }
+    }
+
+    async verify() {
+        try {
+            const { email, otp } = this.request.body;
+            const otpDetails = await Otp.findOne({email});
+            if(!otpDetails){
+                return sendErrorResponse(this.response, 'Email not found!');
+            }
+            if(otp === otpDetails?.otp){
+                return sendResponse(this.response, 'OTP matched!');
+            } else {
+                return sendErrorResponse(this.response, 'Invalid OTP');
+            }
+        } catch (err) {
             return sendServerError(this.response, 'Internal Server Error');
         }
     }
