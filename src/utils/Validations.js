@@ -4,7 +4,7 @@ class Validations {
 
     static sendOtpValidation(){
         return [
-            body("email", "Please enter a valida email").isEmail()
+            body("email", "Please enter a valid email").isEmail()
         ];
     }
 

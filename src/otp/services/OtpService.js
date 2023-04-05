@@ -1,4 +1,4 @@
-import User from "../../db/models/User.js";
+import Otp from "../../db/models/Otp.js";
 import { sendErrorResponse, sendResponse, sendServerError } from "../../utils/handleResponse.js";
 
 class OtpService {
@@ -11,22 +11,20 @@ class OtpService {
     async send() {
         try {
             const { email } = this.request.body;
-            const isEmailExist = await User.findOne({ email });
-            console.log(isEmailExist);
-            if(isEmailExist) {
-                await User.findOneAndUpdate({ email }, { otp: 1234 }).then((res) => {
-                    console.log(res);
-                }).catch(err => {
-                    console.log(err);
-                })
-                return sendResponse(this.response, 'OTP Sent!');
-            }
-
-            await userDetails.save();
-
-            return sendResponse(this.response, 'User registered successfully!');
+            await Otp.updateOne({ email }, {
+                $set: {
+                    email,
+                    otp: 1234
+                }
+            }, { upsert: true }).then((res) => {
+                console.log(res);
+            }).catch(err => {
+                console.log(err);
+            })
+            return sendResponse(this.response, 'OTP Sent!', { email });
         }
-    catch (err) {
+        catch (err) {
+            console.log(err)
             return sendServerError(this.response, 'Internal Server Error');
         }
     }
