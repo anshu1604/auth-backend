@@ -20,6 +20,11 @@ const OtpSchema = new Schema({
         type: Number,
         trim: true
     },
+    isOtpExpired: {
+        type: Boolean,
+        trim: true,
+        default: false
+    },
     created_on: {
         type: Date
     },
