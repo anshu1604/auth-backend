@@ -29,7 +29,6 @@ class OtpController {
             new OtpService(req, res).verify();
         } catch (err) {
             console.log(err);
-            console.log(err);
         }
     }
 }
