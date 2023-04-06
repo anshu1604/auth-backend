@@ -1,4 +1,6 @@
+import { constants } from "../../constants.js";
 import Otp from "../../db/models/Otp.js";
+import User from "../../db/models/User.js";
 import { sendErrorResponse, sendResponse, sendServerError } from "../../utils/handleResponse.js";
 
 class OtpService {
@@ -14,7 +16,9 @@ class OtpService {
             await Otp.updateOne({ email }, {
                 $set: {
                     email,
-                    otp: 1234
+                    otp: 1234,
+                    isOtpExpired: false,
+                    updated_on: new Date()
                 }
             }, { upsert: true });
             return sendResponse(this.response, 'OTP Sent!', { email });
@@ -42,12 +46,21 @@ class OtpService {
             }
 
             if (otp === otpDetails?.otp) {
-                await Otp.findOneAndUpdate({ email }, { isOtpExpired: true });
+                await Otp.findOneAndUpdate({ email }, { isOtpExpired: true, updated_on: new Date() });
+                const isUserAlreadyExist = await User.findOne({ email });
+                if(!isUserAlreadyExist){
+                    const payload = new User({
+                        email,
+                        status: constants.REGISTRATION_PENDING
+                    });
+                    await payload.save();
+                }
                 return sendResponse(this.response, 'OTP matched!');
             } else {
                 return sendErrorResponse(this.response, 'Invalid OTP');
             }
         } catch (err) {
+            console.log(err);
             return sendServerError(this.response, 'Internal Server Error');
         }
     }
