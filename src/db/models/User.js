@@ -2,6 +2,11 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const UserSchema = new Schema({
+    user_id: {
+        type: String,
+        trim: true,
+        unique: true
+    },
     first_name: {
         type: String,
         trim: true
@@ -13,7 +18,8 @@ const UserSchema = new Schema({
     email: {
         type: String,
         trim: true,
-        required: true
+        required: true,
+        unique: true
     },
     mobile: {
         type: String,
@@ -37,10 +43,6 @@ const UserSchema = new Schema({
     },
     token: {
         type: String,
-        trim: true
-    },
-    otp: {
-        type: Number,
         trim: true
     },
     created_on: {

@@ -2,6 +2,7 @@ import { constants } from "../../constants.js";
 import Otp from "../../db/models/Otp.js";
 import User from "../../db/models/User.js";
 import { sendErrorResponse, sendResponse, sendServerError } from "../../utils/handleResponse.js";
+import jwt from "jsonwebtoken";
 
 class OtpService {
 
@@ -47,22 +48,58 @@ class OtpService {
 
             if (otp === otpDetails?.otp) {
                 await Otp.findOneAndUpdate({ email }, { isOtpExpired: true, updated_on: new Date() });
-                const isUserAlreadyExist = await User.findOne({ email });
-                if(!isUserAlreadyExist){
+                const userDetails = await User.findOne({ email });
+                let jwtPayload, userResponse;
+                if (!userDetails) {
+                    
                     const payload = new User({
+                        user_id: "sso" + new Date().getTime(),
                         email,
-                        status: constants.REGISTRATION_PENDING
+                        status: constants.REGISTRATION_PENDING,
                     });
+
+                    const { user_id, status } = payload;
+
+                    jwtPayload = {
+                        email,
+                        user_id,
+                        status
+                    };
+                    payload.token = jwt.sign(jwtPayload, "13042021");
+
                     await payload.save();
+
+                    userResponse = {
+                        email,
+                        status,
+                        accessToken: payload.token
+                    };
+                } else {
+                    const { user_id, status } = userDetails;
+                    jwtPayload = {
+                        email,
+                        user_id,
+                        status
+                    };
+                    userResponse = {
+                        email,
+                        status,
+                        accessToken: jwt.sign(jwtPayload, "13042021")
+                    }
+                    await User.findOneAndUpdate({ email }, { token: userResponse.accessToken });
                 }
-                return sendResponse(this.response, 'OTP matched!');
+                return sendResponse(this.response, 'OTP matched!', userResponse);
             } else {
                 return sendErrorResponse(this.response, 'Invalid OTP');
             }
         } catch (err) {
-            console.log(err);
+            console.log(err)
             return sendServerError(this.response, 'Internal Server Error');
         }
+    }
+
+    generateUserID() {
+
     }
 }
 
