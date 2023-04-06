@@ -14,7 +14,7 @@ class OtpService {
             await Otp.updateOne({ email }, {
                 $set: {
                     email,
-                    otp: 1239
+                    otp: 1234
                 }
             }, { upsert: true });
             return sendResponse(this.response, 'OTP Sent!', { email });
