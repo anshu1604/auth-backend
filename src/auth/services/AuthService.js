@@ -11,27 +11,29 @@ class AuthService {
   async save() {
     try {
       const { firstName, lastName, email, mobile, country, dob, gender } = this.request.body;
-      const isEmailExist = await User.findOne({ email });
-      if(isEmailExist) {
-        return sendErrorResponse(this.response, 'Email already registered!');
-      }
-      else {
-        const userDetails = new User({
+
+      const fetchUserData = await User.findOne({ email });
+
+      await User.updateOne({ email }, {
+        $set: {
           first_name: firstName,
           last_name: lastName,
-          email,
           mobile,
           country,
           dob,
           gender,
-          status: constants.REGISTRATION_PENDING
-        });
+          status: constants.REGISTRATION_DONE
+        }
+      });
 
-        await userDetails.save();
-
-        return sendResponse(this.response, 'User registered successfully!');
+      if(fetchUserData.status != constants.REGISTRATION_DONE){
+        return sendResponse(this.response, 'Details saved successfully!');
       }
+
+      return sendResponse(this.response, 'Details updated successfully!');
+
     } catch (err) {
+      console.log(err)
       return sendServerError(this.response, 'Internal Server Error');
     }
   }
