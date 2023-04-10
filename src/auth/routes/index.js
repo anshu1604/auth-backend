@@ -4,6 +4,6 @@ import AuthController from "../controllers/AuthController.js";
 
 const authRouter = express.Router();
 
-authRouter.post("/auth", Validations.registerValidation(), AuthController.save);
+authRouter.put("/auth", Validations.registerValidation(), AuthController.save);
 
 export default authRouter;
