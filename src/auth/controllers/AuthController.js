@@ -22,7 +22,14 @@ class AuthController {
     try {
       new AuthService(req, res).get();
     } catch (err) {
+      console.log(err);
+    }
+  }
 
+  static logout(req, res) {
+    try {
+      new AuthService(req, res).logout();
+    } catch(err) {
       console.log(err);
     }
   }
