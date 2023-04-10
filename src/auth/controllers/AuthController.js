@@ -3,6 +3,7 @@ import { sendErrorResponse } from "../../utils/handleResponse.js";
 import AuthService from "../services/AuthService.js";
 
 class AuthController {
+
   static save(req, res) {
     try {
       const errors = validationResult(req);
@@ -13,6 +14,15 @@ class AuthController {
       }
       new AuthService(req, res).save();
     } catch (err) {
+      console.log(err);
+    }
+  }
+
+  static get(req, res) {
+    try {
+      new AuthService(req, res).get();
+    } catch (err) {
+
       console.log(err);
     }
   }
