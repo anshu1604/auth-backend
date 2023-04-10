@@ -11,4 +11,7 @@ authRouter.put("/user", [Validations.registerValidation(), verifyToken], AuthCon
 // get user details
 authRouter.get("/user", verifyToken, AuthController.get);
 
+// logout user
+authRouter.put("/logout", verifyToken, AuthController.logout);
+
 export default authRouter;

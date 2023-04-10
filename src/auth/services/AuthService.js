@@ -26,7 +26,7 @@ class AuthService {
         }
       });
 
-      if(fetchUserData.status != constants.USER_DETAIL_DONE){
+      if (fetchUserData.status != constants.USER_DETAIL_DONE) {
         return sendResponse(this.response, 'Details saved successfully!');
       }
 
@@ -57,9 +57,25 @@ class AuthService {
       }
 
       return sendResponse(this.response, 'User Details', data);
-    } catch(err) {
+    } catch (err) {
       console.log(err);
       return sendServerError(this.response, 'Internal Server Error');
+    }
+  }
+
+  async logout() {
+    try {
+      const { email } = this.request.user;
+
+      await User.updateOne({ email }, {
+        $set: {
+          token: null
+        }
+      });
+
+      return sendResponse(this.response, 'User Logged Out!');
+    } catch (err) {
+      console.log(err);
     }
   }
 }
