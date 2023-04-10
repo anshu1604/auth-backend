@@ -55,7 +55,7 @@ class OtpService {
                     const payload = new User({
                         user_id: "sso" + new Date().getTime(),
                         email,
-                        status: constants.REGISTRATION_PENDING,
+                        status: constants.USER_DETAIL_PENDING,
                     });
 
                     const { user_id, status } = payload;

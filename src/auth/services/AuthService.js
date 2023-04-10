@@ -22,11 +22,11 @@ class AuthService {
           country,
           dob,
           gender,
-          status: constants.REGISTRATION_DONE
+          status: constants.USER_DETAIL_DONE
         }
       });
 
-      if(fetchUserData.status != constants.REGISTRATION_DONE){
+      if(fetchUserData.status != constants.USER_DETAIL_DONE){
         return sendResponse(this.response, 'Details saved successfully!');
       }
 
@@ -34,6 +34,31 @@ class AuthService {
 
     } catch (err) {
       console.log(err)
+      return sendServerError(this.response, 'Internal Server Error');
+    }
+  }
+
+  async get() {
+    try {
+      const { email } = this.request.user;
+
+      const userDetails = await User.findOne({ email });
+
+      const data = {
+        userID: userDetails?.user_id,
+        firstName: userDetails?.first_name,
+        lastName: userDetails?.last_name,
+        email: userDetails?.email,
+        mobileNumber: userDetails?.mobile,
+        status: userDetails?.status == constants.USER_DETAIL_PENDING ? constants?.USER_DETAIL_PENDING_TEXT : constants?.USER_DETAIL_DONE_TEXT,
+        gender: userDetails?.gender,
+        DOB: userDetails?.dob,
+        country: userDetails?.country
+      }
+
+      return sendResponse(this.response, 'User Details', data);
+    } catch(err) {
+      console.log(err);
       return sendServerError(this.response, 'Internal Server Error');
     }
   }

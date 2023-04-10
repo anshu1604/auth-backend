@@ -1,4 +1,6 @@
 export const constants = {
-    REGISTRATION_PENDING: 0,
-    REGISTRATION_DONE: 1
+    USER_DETAIL_PENDING: 0,
+    USER_DETAIL_DONE: 1,
+    USER_DETAIL_PENDING_TEXT: 'Pending',
+    USER_DETAIL_DONE_TEXT: 'Done'
 }
