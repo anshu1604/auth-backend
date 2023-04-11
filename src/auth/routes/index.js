@@ -14,4 +14,7 @@ authRouter.get("/user", verifyToken, AuthController.get);
 // logout user
 authRouter.put("/logout", verifyToken, AuthController.logout);
 
+// authenticate user
+authRouter.get("/authenticate", verifyToken, AuthController.authenticate);
+
 export default authRouter;

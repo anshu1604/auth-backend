@@ -1,5 +1,5 @@
 import { validationResult } from "express-validator";
-import { sendErrorResponse } from "../../utils/handleResponse.js";
+import { sendErrorResponse, sendResponse } from "../../utils/handleResponse.js";
 import AuthService from "../services/AuthService.js";
 
 class AuthController {
@@ -29,7 +29,15 @@ class AuthController {
   static logout(req, res) {
     try {
       new AuthService(req, res).logout();
-    } catch(err) {
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  static authenticate(req, res) {
+    try {
+      return sendResponse(res, 'User successfully authenticated!');
+    } catch (err) {
       console.log(err);
     }
   }
