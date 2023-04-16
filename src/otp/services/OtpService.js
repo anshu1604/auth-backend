@@ -22,7 +22,7 @@ class OtpService {
                     updated_on: new Date()
                 }
             }, { upsert: true });
-            return sendResponse(this.response, 'OTP Sent!', { email });
+            return sendResponse(this.response, 'OTP Sent!');
         }
         catch (err) {
             return sendServerError(this.response, 'Internal Server Error');

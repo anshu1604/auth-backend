@@ -4,13 +4,13 @@ class Validations {
 
     static sendOtpValidation() {
         return [
-            body("email", "Please enter a valid email").isEmail()
+            body("email", "Email cannot be empty").notEmpty().isEmail().withMessage("Please enter a valid email")
         ];
     }
 
     static verifyOtpValidation() {
         const validations = this.sendOtpValidation();
-        validations.push(body("otp", "Please enter a valid OTP").notEmpty().isLength({ min: 4, max: 4 }).withMessage("OTP can be of 4 digits only").isNumeric().withMessage("OTP can be numeric only"));
+        validations.push(body("otp", "OTP cannot be empty").notEmpty().isLength({ min: 4, max: 4 }).withMessage("OTP can be of 4 digits only").isNumeric().withMessage("OTP can be numeric only"));
         return validations;
     }
 
