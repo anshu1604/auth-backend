@@ -20,10 +20,15 @@ const OtpSchema = new Schema({
         type: Number,
         trim: true
     },
-    isOtpExpired: {
+    is_otp_expired: {
         type: Boolean,
         trim: true,
         default: false
+    },
+    send_otp_count: {
+        type: Number,
+        trim: true,
+        default: 0
     },
     created_on: {
         type: Date
