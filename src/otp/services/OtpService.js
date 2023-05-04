@@ -18,7 +18,7 @@ class OtpService {
             const otpEntry = await Otp.findOne({ email });
             let updated_on = otpEntry?.updated_on;
             let sendOtpCount = otpEntry?.send_otp_count;
-            const unlockTime = updated_on?.setMinutes(updated_on?.getMinutes() + 1);
+            const unlockTime = updated_on?.setMinutes(updated_on?.getMinutes() + constants.ACCOUNT_UNLOCK_MINUTE);
 
             if (currentDate > unlockTime && sendOtpCount == constants.MAX_SEND_OTP_COUNT) {
                 await Otp.updateOne({email}, {
@@ -64,7 +64,7 @@ class OtpService {
             const otpDetails = await Otp.findOne({ email });
             const { updated_on, is_otp_expired } = otpDetails;
 
-            const otpExpirationTime = updated_on.setMinutes(updated_on.getMinutes() + 2);
+            const otpExpirationTime = updated_on.setMinutes(updated_on.getMinutes() + constants.OTP_EXPIRATION_MINUTE);
 
             if (currentDate > otpExpirationTime || is_otp_expired) {
                 return sendErrorResponse(this.response, 'OTP Expired, Please try again!');
