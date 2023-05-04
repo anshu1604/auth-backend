@@ -49,7 +49,7 @@ class OtpService {
                     send_otp_count: 1
                 }
             }, { upsert: true });
-            return sendResponse(this.response, 'OTP Sent!');
+            return sendResponse(this.response, 'OTP Sent!', {otpExpirationTime: constants.OTP_EXPIRATION_MINUTE});
         }
         catch (err) {
             console.log(err);
