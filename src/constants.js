@@ -3,5 +3,7 @@ export const constants = {
     USER_DETAIL_DONE: 1,
     USER_DETAIL_PENDING_TEXT: 'Pending',
     USER_DETAIL_DONE_TEXT: 'Done',
-    MAX_SEND_OTP_COUNT: 4
+    MAX_SEND_OTP_COUNT: 4,
+    OTP_EXPIRATION_MINUTE: 1,
+    ACCOUNT_UNLOCK_MINUTE: 2
 }
