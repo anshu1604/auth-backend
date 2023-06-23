@@ -46,14 +46,14 @@ class AuthService {
 
       const data = {
         userID: userDetails?.user_id,
-        firstName: userDetails?.first_name,
-        lastName: userDetails?.last_name,
+        firstName: userDetails?.first_name || '',
+        lastName: userDetails?.last_name || '',
         email: userDetails?.email,
-        mobileNumber: userDetails?.mobile,
+        mobileNumber: userDetails?.mobile || '',
         status: userDetails?.status == constants.USER_DETAIL_PENDING ? constants?.USER_DETAIL_PENDING_TEXT : constants?.USER_DETAIL_DONE_TEXT,
-        gender: userDetails?.gender,
-        DOB: userDetails?.dob,
-        country: userDetails?.country
+        gender: userDetails?.gender || '',
+        DOB: userDetails?.dob || '',
+        country: userDetails?.country || ''
       }
 
       return sendResponse(this.response, 'User Details', data);
